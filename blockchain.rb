@@ -55,8 +55,8 @@ def resolve_conflicts
 		code, message = response.status
 		if code == '200'
 			json = JSON.parse response.read
-			chain = json[:chain]
-			length = json[:length]
+			chain = json['chain']
+			length = json['length']
 
 			if length > max_length and valid_chain(chain)
 				max_length = length

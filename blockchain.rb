@@ -28,9 +28,8 @@ def valid_chain(chain)
 		p check_block
 		p block
 		p "----------------------"
-		return false if block[:previous_hash] != hash(check_block)
-
-		return false unless valid_proof(check_block[:proof], block[:proof], block[:previous_hash])
+		return false if block['previous_hash'] != hash(check_block)
+		return false unless valid_proof(check_block['proof'], block['proof'], block['previous_hash'])
 
 		check_block = block
 		current_index += 1
@@ -92,7 +91,7 @@ def new_block(proof, previous_hash="")
 		timestamp: Time.now.to_i,
 		transaction: @current_transaction,
 		proof: proof,
-		previous_hash: previous_hash || hash(last_block)
+		previous_hash: previous_hash 
 	}
 
 	@current_transaction = []
@@ -126,7 +125,7 @@ def proof_of_work(last_proof)
 =end
 	proof = 0
 	previous_hash = hash(last_block)
-	while valid_proof(last_proof, proof, previous_hash) do
+	while !valid_proof(last_proof, proof, previous_hash) do
 		proof += 1
 	end
 	return proof
@@ -141,7 +140,7 @@ def valid_proof(last_proof, proof, previous_hash)
 =end
 	guess = last_proof.to_s + proof.to_s + previous_hash.to_s
 	guess_hash = Digest::SHA256.hexdigest(guess)
-	return guess_hash[0..3] != "0000"
+	return guess_hash[0..3] == "0000"
 end
 
 def hash(block)

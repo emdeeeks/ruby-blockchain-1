@@ -45,7 +45,7 @@ post '/transaction/new', provides: :json do
 		return "Missing values #{r}" unless values.has_key?(r)
 	}
 	#create new transaction
-	index = blockchain.new_transaction(values["sender"], values["recipient"], values["amount"])
+	index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
 	response = {message: "Transaction will be added to Block #{index}"}
 	return JSON.generate(response)
 end
@@ -63,6 +63,7 @@ post '/nodes/register' , provides: :json do
 	values = JSON.parse request.body.read
 	return "Missing values" unless values.has_key?('nodes')
 	nodes = values["nodes"]
+p nodes
 	nodes.each{|node|
 		blockchain.register_node(node.to_s)
 	}
